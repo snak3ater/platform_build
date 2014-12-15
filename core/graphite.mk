@@ -22,7 +22,7 @@ LOCAL_CFLAGS := $(call cc-option,$(GRAPHITE_FLAGS))
 endif
 
 ifdef LOCAL_CPPFLAGS
-LOCAL_CFLAGS += $(call cpp-option,$(GRAPHITE_FLAGS))
+LOCAL_CPPFLAGS += $(call cpp-option,$(GRAPHITE_FLAGS))
 else
 LOCAL_CPPFLAGS := $(call cpp-option,$(GRAPHITE_FLAGS))
 endif
