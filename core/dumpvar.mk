@@ -82,6 +82,7 @@ else
 $(info   TARGET_KERNEL_TOOLCHAIN=4.8)
 endif
 $(info   USE_O3_OPTIMIZATIONS=$(USE_O3_OPTIMIZATIONS))
+$(info   USE_HOST_4.8=$(USE_HOST_4.8))
 $(info   HOST_ARCH=$(HOST_ARCH))
 $(info   HOST_OS=$(HOST_OS))
 $(info   HOST_OS_EXTRA=$(HOST_OS_EXTRA))
