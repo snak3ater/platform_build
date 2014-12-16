@@ -81,8 +81,16 @@ $(info   TARGET_KERNEL_TOOLCHAIN=$(TARGET_KERNEL_CUSTOM_TOOLCHAIN))
 else
 $(info   TARGET_KERNEL_TOOLCHAIN=4.8)
 endif
+ifdef USE_O3_OPTIMIZATIONS
 $(info   USE_O3_OPTIMIZATIONS=$(USE_O3_OPTIMIZATIONS))
+else
+$(info   USE_O3_OPTIMIZATIONS=false)
+endif
+ifdef USE_HOST_4_8
 $(info   USE_HOST_4_8=$(USE_HOST_4_8))
+else
+$(info   USE_HOST_4_8=false)
+endif
 $(info   HOST_ARCH=$(HOST_ARCH))
 $(info   HOST_OS=$(HOST_OS))
 $(info   HOST_OS_EXTRA=$(HOST_OS_EXTRA))
