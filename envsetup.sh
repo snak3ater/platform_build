@@ -5,6 +5,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - tapas:   tapas [<App1> <App2> ...] [arm|x86|mips|armv5|arm64|x86_64|mips64] [eng|userdebug|user]
 - croot:   Changes directory to the top of the tree.
 - m:       Makes from the top of the tree.
+- mka:     Builds using SCHED_BATCH on all processors.
 - mm:      Builds all of the modules in the current directory, but not their dependencies.
 - mmm:     Builds all of the modules in the supplied directories, but not their dependencies.
            To limit the modules being built use the syntax: mmm dir/:target1,target2.
@@ -16,6 +17,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - resgrep: Greps on all local res/*.xml files.
 - sgrep:   Greps on all local source files.
 - godir:   Go to the directory containing a file.
+- reposync: Parallel repo sync using ionice and SCHED_BATCH
 
 Look at the source to view more functions. The complete list is:
 EOF
@@ -452,12 +454,6 @@ function add_lunch_combo()
 }
 
 # add the default one here
-add_lunch_combo aosp_arm-eng
-add_lunch_combo aosp_arm64-eng
-add_lunch_combo aosp_mips-eng
-add_lunch_combo aosp_mips64-eng
-add_lunch_combo aosp_x86-eng
-add_lunch_combo aosp_x86_64-eng
 
 function print_lunch_menu()
 {
@@ -471,9 +467,9 @@ function print_lunch_menu()
     local choice
     for choice in ${LUNCH_MENU_CHOICES[@]}
     do
-        echo "     $i. $choice"
+        echo " $i. $choice "
         i=$(($i+1))
-    done
+    done | column
 
     echo
 }
@@ -1402,6 +1398,28 @@ function godir () {
     \cd $T/$pathname
 }
 
+function mka() {
+    case `uname -s` in
+        Darwin)
+            make -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
+            ;;
+        *)
+            schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+            ;;
+    esac
+}
+
+function reposync() {
+    case `uname -s` in
+        Darwin)
+            repo sync -j 4 "$@"
+            ;;
+        *)
+            schedtool -B -n 1 -e ionice -n 1 `which repo` sync -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+            ;;
+    esac
+}
+
 # Force JAVA_HOME to point to java 1.7 or java 1.6  if it isn't already set.
 #
 # Note that the MacOS path for java 1.7 includes a minor revision number (sigh).
@@ -1475,9 +1493,17 @@ function make()
     local secs=$(($tdiff % 60))
     echo
     if [ $ret -eq 0 ] ; then
-        echo -n -e "#### make completed successfully "
+        if [ $(uname) != "Darwin" ]; then
+            echo -n -e "\e[0;32m#### make completed successfully "
+        else
+            echo -n -e "#### make completed successfully "
+        fi
     else
-        echo -n -e "#### make failed to build some targets "
+        if [ $(uname) != "Darwin" ]; then
+            echo -n -e "\e[0;31m#### make failed to build some targets "
+        else
+            echo -n -e "#### make failed to build some targets "
+        fi
     fi
     if [ $hours -gt 0 ] ; then
         printf "(%02g:%02g:%02g (hh:mm:ss))" $hours $mins $secs
@@ -1486,12 +1512,12 @@ function make()
     elif [ $secs -gt 0 ] ; then
         printf "(%s seconds)" $secs
     fi
-    echo -e " ####"
+    if [ $(uname) != "Darwin" ]; then
+        echo -e " ####\e[00m"
+    fi
     echo
     return $ret
 }
-
-
 
 if [ "x$SHELL" != "x/bin/bash" ]; then
     case `ps -o command -p $$` in
