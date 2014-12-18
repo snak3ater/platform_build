@@ -21,6 +21,7 @@ PRODUCT_PACKAGES := \
     Bluetooth \
     Gallery2 \
     MusicFX \
+    LockClock \
     OneTimeInitializer \
     Provision \
     SystemUI \
