@@ -27,7 +27,6 @@ PRODUCT_PACKAGES := \
 	GestureBuilder \
 	librs_jni \
 	LiveWallpapersPicker \
-	Mms \
 	rild \
 	SdkSetup \
 	SmokeTest \
