@@ -84,12 +84,22 @@ endif
 ifdef USE_O3_OPTIMIZATIONS
 $(info   USE_O3_OPTIMIZATIONS=$(USE_O3_OPTIMIZATIONS))
 else
-$(info   USE_O3_OPTIMIZATIONS=false)
+$(info   USE_O3_OPTIMIZATIONS=No)
 endif
 ifdef USE_HOST_4_8
 $(info   USE_HOST_4_8=$(USE_HOST_4_8))
 else
-$(info   USE_HOST_4_8=false)
+$(info   USE_HOST_4_8=No)
+endif
+ifdef GRAPHITE_OPTS
+$(info   GRAPHITE_OPTIMIZATIONS=$(GRAPHITE_OPTS))
+else
+$(info   GRAPHITE_OPTIMIZATIONS=No)
+endif
+ifdef STRICT_ALIASING
+$(info   STRICT_ALIASING=$(STRICT_ALIASING))
+else
+$(info   STRICT_ALIASING=No)
 endif
 $(info   HOST_ARCH=$(HOST_ARCH))
 $(info   HOST_OS=$(HOST_OS))

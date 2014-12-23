@@ -13,15 +13,43 @@
 # limitations under the License.
 #
 
-ifdef LOCAL_CFLAGS
-LOCAL_CFLAGS += $(call cc-option, -fgraphite, -floop-flatten, -floop-parallelize-all, -ftree-loop-linear, -floop-interchange, -floop-strip-mine, -floop-block)
+ifdef LOCAL_CONLYFLAGS
+LOCAL_CONLYFLAGS += \
+	-fgraphite \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block
 else
-LOCAL_CFLAGS := $(call cc-option, -fgraphite, -floop-flatten, -floop-parallelize-all, -ftree-loop-linear, -floop-interchange, -floop-strip-mine, -floop-block)
+LOCAL_CONLYFLAGS := \
+	-fgraphite \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block
 endif
 
 ifdef LOCAL_CPPFLAGS
-LOCAL_CPPFLAGS += $(call cpp-option, -fgraphite, -floop-flatten, -floop-parallelize-all, -ftree-loop-linear, -floop-interchange, -floop-strip-mine, -floop-block)
+LOCAL_CPPFLAGS += \
+	-fgraphite \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block
 else
-LOCAL_CPPFLAGS := $(call cpp-option, -fgraphite, -floop-flatten, -floop-parallelize-all, -ftree-loop-linear, -floop-interchange, -floop-strip-mine, -floop-block)
+LOCAL_CPPFLAGS := \
+	-fgraphite \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block
 endif
 #####
