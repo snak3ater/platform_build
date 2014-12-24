@@ -114,7 +114,9 @@ endif
 # Include custom gcc flags.  Seperate them so they can be easily managed.
 ifeq ($(GRAPHITE_OPTS),yes)
 ifndef LOCAL_IS_HOST_MODULE
+ifeq ($(LOCAL_CLANG),)
 include $(BUILD_SYSTEM)/graphite.mk
+endif
 endif
 endif
 ifeq ($(STRICT_ALIASING),yes)
