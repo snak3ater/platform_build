@@ -12,7 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# Force disable some modules that are not compatible with graphite flags
+LOCAL_DISABLE_GRAPHITE := \
+	libunwind \
+	libFFTEm \
+	libicui18n \
+	libskia \
+	libvpx \
+	libmedia_jni \
+	libstagefright_mp3dec \
+	libart
 
+ifneq (1,$(words $(filter $(LOCAL_DISABLE_GRAPHITE), $(LOCAL_MODULE))))
 ifdef LOCAL_CONLYFLAGS
 LOCAL_CONLYFLAGS += \
 	-fgraphite \
@@ -51,5 +62,12 @@ LOCAL_CPPFLAGS := \
 	-floop-interchange \
 	-floop-strip-mine \
 	-floop-block
+endif
+endif
+
+# Graphite causes a warning with frameworks/av: libstagefright_amrwbenc
+ifeq ($(LOCAL_MODULE),libstagefright_amrwbenc)
+LOCAL_CONLYFLAGS += -Wno-error=maybe-uninitialized
+LOCAL_CPPFLAGS += -Wno-error=maybe-uninitialized
 endif
 #####

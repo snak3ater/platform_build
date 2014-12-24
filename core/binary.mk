@@ -119,6 +119,7 @@ include $(BUILD_SYSTEM)/graphite.mk
 endif
 endif
 endif
+
 ifeq ($(STRICT_ALIASING),yes)
 include $(BUILD_SYSTEM)/strict.mk
 endif
